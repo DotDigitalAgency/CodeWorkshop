@@ -1,3 +1,3 @@
 # CodeWorkshop
 
-My little project
+My little project!
