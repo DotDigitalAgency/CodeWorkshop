@@ -1,0 +1,139 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    </style>
+</head>
+<body>
+    <canvas id="game" width="600" height="300"></canvas>
+    <script>
+        let canvas = document.getElementById('game');
+        let artboard = canvas.getContext('2d');
+
+        artboard.fillStyle = "black";
+        artboard.fillRect(0, 0, canvas.width, canvas.height);
+
+        var pong = {
+            x:canvas.width/2,
+            y:canvas.height/2,
+            size:[10,10],
+            vx:1,
+            vy:1,
+            speed:1,
+            color:'white',
+        };
+
+        var user_paddle = {
+            x:canvas.width-20,
+            y:10,
+            size:[10,50],
+            vx:5,
+            vy:5,
+            color:'white',
+        }
+
+        var computer_paddle = {
+            x:10,
+            y:10,
+            size:[10,50],
+            vx:1,
+            vy:1,
+            speed:1,
+            color:'white',
+        }
+
+        var settings = {
+            fps:60,
+            score:[0,0]
+        }
+
+        canvas.onmousemove = function(e) {
+            settings.mouse_x = e.clientX;
+            settings.mouse_y = e.clientY;
+        }
+
+        
+
+        setInterval(engine,1000/settings.fps); //60 fps
+        // window.requestAnimationFrame(render);   preferred
+
+        function engine () {
+            pong.x += pong.vx * pong.speed;
+            pong.y += pong.vy * pong.speed;
+
+            // move paddle with mouse
+            user_paddle.y = settings.mouse_y - user_paddle.size[1]/2;
+            if (user_paddle.y <= 5) {
+                user_paddle.y = 5;
+            } else if (user_paddle.y >= (canvas.height - user_paddle.size[1] -5 )) {
+                user_paddle.y = canvas.height - user_paddle.size[1] - 5;
+            }
+
+            //detect and move computer paddle
+            computer_paddle.y += computer_paddle.vy* computer_paddle.speed;
+            // computer_paddle.y += ((pong.y - (computer_paddle.y + computer_paddle.size[1]))) * 0.09;
+            if (computer_paddle.y <= 5) {
+                computer_paddle.y = 5;
+                computer_paddle.vy = - computer_paddle.vy;
+            } else if (computer_paddle.y >= (canvas.height - computer_paddle.size[1] -5 )) {
+                computer_paddle.y = canvas.height - computer_paddle.size[1] - 5;
+                computer_paddle.vy = - computer_paddle.vy;
+            }
+
+            // bounce back from the edges
+            if (pong.y + pong.size[0] >= canvas.height || pong.y <= 0) {
+                pong.vy = -pong.vy;
+                // pong.vx *= Math.random() + Math.random();
+            } else if (pong.x + pong.size[0] >= canvas.width || pong.x <= 0) {
+                pong.vx = -pong.vx;
+            }
+
+            //collision detection
+            if (detect_collision(pong,user_paddle) || detect_collision(pong,computer_paddle)) {
+                pong.vx = -pong.vx;
+                pong.speed *=1.1 //increase speed at every collision
+            }
+
+            render();
+        }
+
+        function detect_collision (a_object,b_object) {
+            return  a_object.x < b_object.x + b_object.size[0] &&   //a.x értéke kissebb mint b.x és b.width együtt - jobb oldal
+                    a_object.x + a_object.size[0] > b_object.x &&   //a.x értéke es a.width nagyobb mint b.x - bal oldal
+                    a_object.y < b_object.y + b_object.size[1] &&   //a.y kissebb mint b.y es b.height egyutt - alulrol
+                    a_object.y + a_object.size[1] > b_object.y;     //a.y es a.height egyutt nagyobb mint b.y 
+        }
+        
+        function render () {
+            
+            artboard.clearRect(0, 0, canvas.width, canvas.height);
+
+            // set bavkground color
+            artboard.fillStyle = "black";
+            artboard.fillRect(0, 0, canvas.width, canvas.height);
+
+            //render pong
+            artboard.fillStyle = pong.color;
+            artboard.fillRect(pong.x, pong.y, pong.size[0],pong.size[1]);
+
+            //render userpaddle
+            artboard.fillStyle = user_paddle.color;
+            artboard.fillRect(user_paddle.x, user_paddle.y, user_paddle.size[0],user_paddle.size[1]);
+
+                        //render userpaddle
+            artboard.fillStyle = computer_paddle.color;
+            artboard.fillRect(computer_paddle.x, computer_paddle.y, computer_paddle.size[0],computer_paddle.size[1]);
+
+            
+
+            // window.requestAnimationFrame(render); 
+        }
+
+        render();
+
+
+    </script>
+</body>
+</html>

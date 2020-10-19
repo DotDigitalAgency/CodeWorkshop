@@ -1,3 +1,59 @@
 body {
-    
+    font-family: 'Rubik', sans-serif;   
+    margin: 0px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    height: 70px;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+}
+
+header a {
+    margin-left:20px;
+    text-decoration: none;
+    color: rgba(0, 0, 0, .5);
+}
+
+header a:hover {
+    text-decoration: underline;
+    color: rgba(0, 0, 0, 1);
+}
+
+section {
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+section.hero {
+    border: 1px solid red;
+}
+
+section.hero h1 {
+    font-size: 20vw;
+    line-height: 16vw;
+    margin-bottom: 5vh;
+    margin-top: 200px;
+    width:60vw;
+    border: 1px solid red;
+}
+
+section.hero img {
+    display: block;
+    position: absolute;
+    left:10vw;
+    top:20px;
+    width: 500px;
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
 }
