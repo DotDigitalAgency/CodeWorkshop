@@ -83,9 +83,8 @@
             }
 
             // bounce back from the edges
-            if (pong.y + pong.size[0] >= canvas.height || pong.y <= 0) {
+            if (pong.y + pong.size[0] >= canvas.height || pong.y <= 0) { 
                 pong.vy = -pong.vy;
-                // pong.vx *= Math.random() + Math.random();
             } else if (pong.x + pong.size[0] >= canvas.width || pong.x <= 0) {
                 pong.vx = -pong.vx;
             }
